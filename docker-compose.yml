@@ -17,6 +17,12 @@ services:
       - "5050:5050"
     environment:
       LIBPROCESS_IP: ${HOST_IP}
+  mesos-master:
+    image: garland/mesosphere-docker-mesos-master 
+    network_mode: "host"
+    ports:
+      - "5050:5050"
+    environment:
       MESOS_HOSTNAME: ${HOST_IP}
       MESOS_ZK: zk://${HOST_IP}:2181/mesos
       MESOS_PORT: 5050
@@ -54,3 +60,12 @@ services:
       - /var/run/docker.sock:/run/docker.sock   
     depends_on:
       - mesos-master
+    image: garland/mesosphere-docker-mesos-master:latest
+    entrypoint: mesos-slave
+    environment: 
+      MESOS_MASTER: zk://${HOST_IP}:2181/mesos
+      MESOS_LOG_DIR: /var/log/mesos
+      MESOS_LOGGING_LEVEL: INFO
+    depends_on:
+      - marathon
+
