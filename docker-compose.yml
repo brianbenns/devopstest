@@ -35,7 +35,7 @@ services:
       LIBPROCESS_IP: ${DOCKER_IP}
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup
-      - /usr/bin/docker:/usr/bin/docker
+      - ${WHICH_DOCKER}:/usr/bin/docker
       - /var/run/docker.sock:/var/run/docker.sock
     depends_on:
       - zk
